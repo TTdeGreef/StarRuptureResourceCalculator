@@ -1,0 +1,185 @@
+digraph {
+	node [shape=box]
+	rankdir=TB
+	{
+		rank=same
+		"Heat Shield" [label="Heat Shield
+x0.50"]
+	}
+	{
+		rank=same
+		Uberfilament [label="Uberfilament
+x0.60"]
+	}
+	"Heat Shield" -> Uberfilament [style=invis]
+	{
+		rank=same
+		Epoxy [label="Epoxy
+x0.45"]
+		Aerogel [label="Aerogel
+x0.45"]
+	}
+	Uberfilament -> Epoxy [style=invis]
+	{
+		rank=same
+		"Liquid Helium" [label="Liquid Helium
+x0.90"]
+		"Synthetic Resin" [label="Synthetic Resin
+x0.45"]
+	}
+	Epoxy -> "Liquid Helium" [style=invis]
+	{
+		rank=same
+		"Hardening Agent" [label="Hardening Agent
+x0.90"]
+	}
+	"Liquid Helium" -> "Hardening Agent" [style=invis]
+	{
+		rank=same
+		"Sulphuric Acid" [label="Sulphuric Acid
+x0.79"]
+	}
+	"Hardening Agent" -> "Sulphuric Acid" [style=invis]
+	{
+		rank=same
+		Chemicals [label="Chemicals
+x1.58"]
+	}
+	"Sulphuric Acid" -> Chemicals [style=invis]
+	{
+		rank=same
+		"Synthetic Silicon" [label="Synthetic Silicon
+x1.01"]
+		Applicator [label="Applicator
+x0.90"]
+		"Reinforced Frame" [label="Reinforced Frame
+x0.50"]
+	}
+	Chemicals -> "Synthetic Silicon" [style=invis]
+	{
+		rank=same
+		Ceramics [label="Ceramics
+x1.01"]
+		Tube [label="Tube
+x2.20"]
+		Glass [label="Glass
+x1.35"]
+		"Goethite Powder" [label="Goethite Powder
+x0.38"]
+	}
+	"Synthetic Silicon" -> Ceramics [style=invis]
+	{
+		rank=same
+		"Calcium Powder" [label="Calcium Powder
+x3.45"]
+		"Calcite Sheets" [label="Calcite Sheets
+x1.41"]
+		"Wolfram Powder" [label="Wolfram Powder
+x1.91"]
+		"Titanium Rod" [label="Titanium Rod
+x2.20"]
+		"Titanium Sheet" [label="Titanium Sheet
+x1.10"]
+		"Goethite Lattice" [label="Goethite Lattice
+x0.45"]
+		"Titanium Beam" [label="Titanium Beam
+x0.20"]
+	}
+	Ceramics -> "Calcium Powder" [style=invis]
+	{
+		rank=same
+		"Pressurized Helium" [label="Pressurized Helium
+x0.97"]
+		"Calcium Block" [label="Calcium Block
+x1.85"]
+		"Wolfram Bar" [label="Wolfram Bar
+x0.96"]
+		"Titanium Bar" [label="Titanium Bar
+x1.78"]
+		"Goethite Ingot" [label="Goethite Ingot
+x0.19"]
+		"Titanoferrite Ingot" [label="Titanoferrite Ingot
+x0.28"]
+		"Wolfram Steel Ingot" [label="Wolfram Steel Ingot
+x0.12"]
+	}
+	"Calcium Powder" -> "Pressurized Helium" [style=invis]
+	{
+		rank=same
+		"Helium-3" [label="Helium-3
+x2.23"]
+		"Sulphur Ore" [label="Sulphur Ore
+x3.64"]
+		"Calcium Ore" [label="Calcium Ore
+x1.85"]
+		"Wolfram Ore" [label="Wolfram Ore
+x1.26"]
+		"Titanium Ore" [label="Titanium Ore
+x2.48"]
+		"Goethite Ore" [label="Goethite Ore
+x0.59"]
+	}
+	"Pressurized Helium" -> "Helium-3" [style=invis]
+	Epoxy -> "Heat Shield" [label="6/min" color=gray40 penwidth=1.2]
+	Aerogel -> "Heat Shield" [label="6/min" color=gray40 penwidth=1.2]
+	Uberfilament -> "Heat Shield" [label="6/min" color=gray40 penwidth=1.2]
+	"Reinforced Frame" -> "Heat Shield" [label="6/min" color=gray40 penwidth=1.2]
+	"Liquid Helium" -> Epoxy [label="18/min" color=gray40 penwidth=1.2]
+	"Goethite Powder" -> Epoxy [label="18/min" color=gray40 penwidth=1.2]
+	"Synthetic Resin" -> Epoxy [label="18/min" color=gray40 penwidth=1.2]
+	"Pressurized Helium" -> "Liquid Helium" [label="18/min" color=gray40 penwidth=1.2]
+	"Hardening Agent" -> "Liquid Helium" [label="18/min" color=gray40 penwidth=1.2]
+	"Helium-3" -> "Pressurized Helium" [label="29/min" color=gray40 penwidth=1.2]
+	"Sulphur Ore" -> "Pressurized Helium" [label="29/min" color=gray40 penwidth=1.2]
+	"Sulphuric Acid" -> "Hardening Agent" [label="27/min" color=gray40 penwidth=1.2]
+	"Synthetic Silicon" -> "Hardening Agent" [label="27/min" color=gray40 penwidth=1.2]
+	Applicator -> "Hardening Agent" [label="27/min" color=gray40 penwidth=1.2]
+	"Sulphur Ore" -> "Sulphuric Acid" [label="95/min" color=gray40 penwidth=1.2]
+	Chemicals -> "Sulphuric Acid" [label="95/min" color=gray40 penwidth=1.2]
+	"Synthetic Silicon" -> Chemicals [label="95/min" color=gray40 penwidth=1.2]
+	"Wolfram Powder" -> Chemicals [label="95/min" color=gray40 penwidth=1.2]
+	"Helium-3" -> Chemicals [label="95/min" color=gray40 penwidth=1.2]
+	"Calcium Powder" -> "Synthetic Silicon" [label="61/min" color=gray40 penwidth=1.2]
+	"Helium-3" -> "Synthetic Silicon" [label="61/min" color=gray40 penwidth=1.2]
+	Ceramics -> "Synthetic Silicon" [label="61/min" color=gray40 penwidth=1.2]
+	"Calcium Block" -> "Calcium Powder" [label="207/min" color=gray40 penwidth=1.2]
+	"Calcium Ore" -> "Calcium Block" [label="111/min" color=gray40 penwidth=1.2]
+	"Calcite Sheets" -> Ceramics [label="61/min" color=gray40 penwidth=1.2]
+	"Wolfram Powder" -> Ceramics [label="61/min" color=gray40 penwidth=1.2]
+	"Calcium Block" -> "Calcite Sheets" [label="84/min" color=gray40 penwidth=1.2]
+	"Wolfram Bar" -> "Wolfram Powder" [label="172/min" color=gray40 penwidth=1.2]
+	"Wolfram Ore" -> "Wolfram Bar" [label="57/min" color=gray40 penwidth=1.2]
+	Tube -> Applicator [label="14/min" color=gray40 penwidth=1.2]
+	Glass -> Applicator [label="14/min" color=gray40 penwidth=1.2]
+	"Titanium Rod" -> Tube [label="132/min" color=gray40 penwidth=1.2]
+	"Titanium Sheet" -> Tube [label="132/min" color=gray40 penwidth=1.2]
+	"Titanium Bar" -> "Titanium Rod" [label="66/min" color=gray40 penwidth=1.2]
+	"Titanium Ore" -> "Titanium Bar" [label="107/min" color=gray40 penwidth=1.2]
+	"Titanium Bar" -> "Titanium Sheet" [label="66/min" color=gray40 penwidth=1.2]
+	"Helium-3" -> Glass [label="27/min" color=gray40 penwidth=1.2]
+	"Calcium Powder" -> Glass [label="27/min" color=gray40 penwidth=1.2]
+	"Goethite Ingot" -> "Goethite Powder" [label="45/min" color=gray40 penwidth=1.2]
+	"Pressurized Helium" -> "Goethite Powder" [label="45/min" color=gray40 penwidth=1.2]
+	"Calcium Powder" -> "Goethite Powder" [label="45/min" color=gray40 penwidth=1.2]
+	"Goethite Ore" -> "Goethite Ingot" [label="29/min" color=gray40 penwidth=1.2]
+	"Hardening Agent" -> "Synthetic Resin" [label="9/min" color=gray40 penwidth=1.2]
+	"Sulphuric Acid" -> "Synthetic Resin" [label="9/min" color=gray40 penwidth=1.2]
+	"Calcite Sheets" -> "Synthetic Resin" [label="9/min" color=gray40 penwidth=1.2]
+	"Goethite Powder" -> Aerogel [label="9/min" color=gray40 penwidth=1.2]
+	"Calcium Powder" -> Aerogel [label="9/min" color=gray40 penwidth=1.2]
+	"Liquid Helium" -> Aerogel [label="9/min" color=gray40 penwidth=1.2]
+	"Calcium Powder" -> Uberfilament [label="9/min" color=gray40 penwidth=1.2]
+	"Goethite Lattice" -> Uberfilament [label="9/min" color=gray40 penwidth=1.2]
+	Epoxy -> Uberfilament [label="9/min" color=gray40 penwidth=1.2]
+	"Goethite Ingot" -> "Goethite Lattice" [label="18/min" color=gray40 penwidth=1.2]
+	"Titanoferrite Ingot" -> "Goethite Lattice" [label="18/min" color=gray40 penwidth=1.2]
+	"Wolfram Steel Ingot" -> "Goethite Lattice" [label="18/min" color=gray40 penwidth=1.2]
+	"Titanium Ore" -> "Titanoferrite Ingot" [label="42/min" color=gray40 penwidth=1.2]
+	"Goethite Ore" -> "Titanoferrite Ingot" [label="42/min" color=gray40 penwidth=1.2]
+	"Wolfram Ore" -> "Wolfram Steel Ingot" [label="18/min" color=gray40 penwidth=1.2]
+	"Goethite Ore" -> "Wolfram Steel Ingot" [label="18/min" color=gray40 penwidth=1.2]
+	Tube -> "Reinforced Frame" [label="6/min" color=gray40 penwidth=1.2]
+	"Titanoferrite Ingot" -> "Reinforced Frame" [label="6/min" color=gray40 penwidth=1.2]
+	"Titanium Beam" -> "Reinforced Frame" [label="6/min" color=gray40 penwidth=1.2]
+	"Titanium Bar" -> "Titanium Beam" [label="12/min" color=gray40 penwidth=1.2]
+}

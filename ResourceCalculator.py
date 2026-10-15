@@ -160,17 +160,41 @@ def graph_planning(resource_name, amount_per_min, rail_speed=480):
     dot.render("Planning Graph", view=False)
 
 
+def print_all_resource_tiers(descending=False):
+    item_tiers = []
+    unknown_items = []
+    for resource_name, resource in resource_registry.items():
+        recipes = list(resource.recipes.values())
+        try:
+            item_tiers.append((recipes[0].get_recipe_tier(), resource_name))
+        except (IndexError, KeyError):
+            # No recipe for this item or one of its ingredients
+            unknown_items.append(resource_name)
+
+    item_tiers.sort(key=lambda item: (-item[0] if descending else item[0], item[1]))
+    for tier, resource_name in item_tiers:
+        print(f"Tier {tier}: {resource_name}")
+    for resource_name in sorted(unknown_items):
+        print(f"Tier ?: {resource_name} (missing recipe in chain)")
+
+
 def init_data():
     # Buildings
 
     Building("Ore Excavator")
     Building("Helium-3 Extractor")
     Building("Sulfur Extractor")
+    Building("Laser Drill")
+    Building("Oil Extractor")
 
     Building("Smelter")
     Building("Fabricator")
     Building("Furnace")
     Building("Pressurizer")
+    Building("Mega Press")
+    Building("Assembler")
+    Building("Compounder")
+    Building("Pyro Forge")
 
     # Base Resources and Recipes
 
@@ -184,6 +208,10 @@ def init_data():
     Recipe("Helium-3", [], [], "Helium-3", 2, 2, "Helium-3 Extractor", True)
     Resource("Sulphur Ore")
     Recipe("Sulphur Ore", [], [], "Sulphur Ore", 2, 2, "Sulfur Extractor", True)
+    Resource("Goethite Ore")
+    Recipe("Goethite Ore", [], [], "Goethite Ore", 1, 4, "Laser Drill", True)
+    Resource("Crude Oil")
+    Recipe("Crude Oil", [], [], "Crude Oil", 1, 6, "Oil Extractor", True)
 
     # Crafted Resources and Recipes
 
@@ -203,7 +231,7 @@ def init_data():
     Recipe("Applicator", ["Tube", "Glass"], [8, 2], "Applicator", 1, 4, "Fabricator")
 
     Resource("Basic Building Material")
-    Recipe("Basic Buidling Material", ["Wolfram Ore", "Titanium Ore"], [1, 1], "Basic Building Material", 10, 2, "Fabricator")
+    Recipe("Basic Building Material", ["Wolfram Ore", "Titanium Ore"], [1, 1], "Basic Building Material", 10, 2, "Fabricator")
 
     Resource("Calcite Sheets")
     Recipe("Calcite Sheets", ["Calcium Block"], [1], "Calcite Sheets", 2, 2, "Fabricator")
@@ -214,8 +242,8 @@ def init_data():
     Resource("Rotor")
     Recipe("Rotor", ["Titanium Rod", "Wolfram Wire"], [2, 2], "Rotor", 1, 6, "Fabricator")
 
-    Resource("Stabelizer")
-    Recipe("Stabelizer", ["Rotor", "Titanium Rod"], [1, 2], "Stabelizer", 1, 3, "Fabricator")
+    Resource("Stabilizer")
+    Recipe("Stabilizer", ["Rotor", "Titanium Rod"], [1, 2], "Stabilizer", 1, 3, "Fabricator")
 
     Resource("Stator")
     Recipe("Stator", ["Titanium Housing", "Wolfram Wire"], [2, 1], "Stator", 1, 3, "Fabricator")
@@ -288,6 +316,269 @@ def init_data():
     Resource("Sulphuric Acid")
     Recipe("Sulphuric Acid", ["Sulphur Ore", "Chemicals"], [8, 4], "Sulphuric Acid", 4, 2, "Pressurizer")
 
+    # Mega Press
+
+    Resource("Battery")
+    Recipe("Battery", ["Inductor", "Electronics", "Sulphuric Acid"], [2, 1, 1], "Battery", 1, 4, "Mega Press")
+
+    Resource("Electromagnetic Coil")
+    Recipe(
+        "Electromagnetic Coil",
+        ["Inductor", "Pressurized Helium", "Wolfram Plate", "Supermagnet"],
+        [1, 1, 6, 1],
+        "Electromagnetic Coil",
+        1,
+        4,
+        "Mega Press",
+    )
+
+    Resource("Goethite Lattice")
+    Recipe(
+        "Goethite Lattice",
+        ["Goethite Ingot", "Titanoferrite Ingot", "Wolfram Steel Ingot"],
+        [2, 2, 2],
+        "Goethite Lattice",
+        2,
+        3,
+        "Mega Press",
+    )
+
+    Resource("Heat Shield")
+    Recipe(
+        "Heat Shield",
+        ["Epoxy", "Aerogel", "Uberfilament", "Reinforced Frame"],
+        [3, 3, 3, 2],
+        "Heat Shield",
+        2,
+        10,
+        "Mega Press",
+    )
+
+    Resource("Heavy Ammo")
+    Recipe("Heavy Ammo", ["Basic Building Material", "Titanium Rod"], [24, 6], "Heavy Ammo", 15, 6, "Mega Press")
+
+    Resource("Impeller")
+    Recipe(
+        "Impeller",
+        ["Titanium Rod", "Heat Resistant Sheet", "Wolfram Plate", "Stabilizer"],
+        [2, 2, 1, 1],
+        "Impeller",
+        1,
+        4,
+        "Mega Press",
+    )
+
+    Resource("Intermediate Building Material")
+    Recipe(
+        "Intermediate Building Material",
+        ["Basic Building Material", "Inductor", "Glass", "Titanium Housing"],
+        [40, 2, 2, 2],
+        "Intermediate Building Material",
+        25,
+        6,
+        "Mega Press",
+    )
+
+    Resource("Ion Stabilizer")
+    Recipe(
+        "Ion Stabilizer",
+        ["Epoxy", "Liquid Helium", "Onboard Instruments", "Explosive Charge"],
+        [1, 3, 1, 1],
+        "Ion Stabilizer",
+        1,
+        10,
+        "Mega Press",
+    )
+
+    Resource("Nozzle")
+    Recipe("Nozzle", ["Heat Resistant Sheet", "Helium-3", "Stabilizer"], [2, 6, 1], "Nozzle", 1, 5, "Mega Press")
+
+    Resource("Pump")
+    Recipe("Pump", ["Valve", "Turbine", "Impeller", "Sulphuric Acid"], [1, 1, 1, 3], "Pump", 1, 10, "Mega Press")
+
+    Resource("Reinforced Frame")
+    Recipe(
+        "Reinforced Frame", ["Tube", "Titanoferrite Ingot", "Titanium Beam"], [4, 4, 2], "Reinforced Frame", 1, 5, "Mega Press"
+    )
+
+    Resource("Reinforced Housing")
+    Recipe(
+        "Reinforced Housing",
+        ["Titanium Housing", "Wolfram Steel Ingot", "Wolfram Plate"],
+        [1, 4, 3],
+        "Reinforced Housing",
+        1,
+        4,
+        "Mega Press",
+    )
+
+    Resource("Shotgun Ammo")
+    Recipe("Shotgun Ammo", ["Basic Building Material", "Calcium Powder"], [20, 6], "Shotgun Ammo", 15, 6, "Mega Press")
+
+    Resource("Standard Ammo")
+    Recipe("Standard Ammo", ["Basic Building Material", "Wolfram Powder"], [18, 4], "Standard Ammo", 20, 6, "Mega Press")
+
+    Resource("Turbine")
+    Recipe("Turbine", ["Impeller", "Stator", "Rotor", "Sulphuric Acid"], [1, 1, 2, 2], "Turbine", 1, 6, "Mega Press")
+
+    Resource("Valve")
+    Recipe("Valve", ["Titanium Housing", "Titanium Beam", "Titanium Rod", "Nozzle"], [1, 3, 2, 1], "Valve", 1, 10, "Mega Press")
+
+    # Assembler
+
+    Resource("Accumulator")
+    Recipe("Accumulator", ["Electronics", "Stator", "Battery"], [2, 1, 1], "Accumulator", 1, 5, "Assembler")
+
+    Resource("Condenser")
+    Recipe("Condenser", ["Resonator", "Pump", "Nanofibre"], [1, 3, 8], "Condenser", 1, 15, "Assembler")
+
+    Resource("Electromagnet")
+    Recipe(
+        "Electromagnet",
+        ["Electromagnetic Coil", "Synthetic Resin", "Accumulator"],
+        [3, 3, 1],
+        "Electromagnet",
+        1,
+        5,
+        "Assembler",
+    )
+
+    Resource("Explosive Charge")
+    Recipe("Explosive Charge", ["Reinforced Housing", "Epoxy"], [2, 1], "Explosive Charge", 1, 6, "Assembler")
+
+    Resource("Generator")
+    Recipe("Generator", ["Turbine", "Battery", "Nozzle"], [1, 1, 1], "Generator", 1, 10, "Assembler")
+
+    Resource("Laser Emitter")
+    Recipe("Laser Emitter", ["Lens", "Resonator", "Electromagnetic Coil"], [1, 1, 6], "Laser Emitter", 1, 6, "Assembler")
+
+    Resource("Onboard Instruments")
+    Recipe(
+        "Onboard Instruments",
+        ["Electronics", "Stabilizer", "Reinforced Housing"],
+        [1, 2, 1],
+        "Onboard Instruments",
+        1,
+        5,
+        "Assembler",
+    )
+
+    Resource("Plastic Dust")
+    Recipe("Plastic Dust", ["Organic Compound", "Basic Fuel", "Plastic"], [2, 1, 2], "Plastic Dust", 2, 10, "Assembler")
+
+    Resource("Pressure Tank")
+    Recipe("Pressure Tank", ["Heat Resistant Sheet", "Valve", "Pump"], [5, 2, 2], "Pressure Tank", 1, 10, "Assembler")
+
+    Resource("Pseudorubber Insulator")
+    Recipe(
+        "Pseudorubber Insulator",
+        ["Plastic", "Epoxy", "Goethite Lattice"],
+        [5, 2, 3],
+        "Pseudorubber Insulator",
+        2,
+        12,
+        "Assembler",
+    )
+
+    Resource("Resonator")
+    Recipe("Resonator", ["Accumulator", "Generator", "Liquid Helium"], [1, 2, 2], "Resonator", 1, 10, "Assembler")
+
+    Resource("Scanner")
+    Recipe("Scanner", ["Lens", "Generator", "Stabilizer"], [3, 3, 12], "Scanner", 1, 10, "Assembler")
+
+    Resource("Uberfilament")
+    Recipe("Uberfilament", ["Calcium Powder", "Goethite Lattice", "Epoxy"], [6, 2, 1], "Uberfilament", 1, 4, "Assembler")
+
+    # Compounder
+
+    Resource("Aerogel")
+    Recipe("Aerogel", ["Goethite Powder", "Calcium Powder", "Liquid Helium"], [4, 6, 2], "Aerogel", 2, 6, "Compounder")
+
+    Resource("Basic Fuel")
+    Recipe("Basic Fuel", ["Wolfram Powder", "Goethite Powder", "Liquid Helium"], [4, 2, 4], "Basic Fuel", 1, 6, "Compounder")
+
+    Resource("Epoxy")
+    Recipe("Epoxy", ["Liquid Helium", "Goethite Powder", "Synthetic Resin"], [1, 3, 1], "Epoxy", 2, 3, "Compounder")
+
+    Resource("Goethite Powder")
+    Recipe(
+        "Goethite Powder",
+        ["Goethite Ingot", "Pressurized Helium", "Calcium Powder"],
+        [1, 1, 1],
+        "Goethite Powder",
+        4,
+        2,
+        "Compounder",
+    )
+
+    Resource("Ion Injector")
+    Recipe("Ion Injector", ["Applicator", "Electromagnet", "Pressure Tank"], [8, 2, 1], "Ion Injector", 1, 12, "Compounder")
+
+    Resource("Lens")
+    Recipe("Lens", ["Glass", "Hardening Agent", "Synthetic Resin"], [10, 6, 4], "Lens", 1, 10, "Compounder")
+
+    Resource("Liquid Helium")
+    Recipe("Liquid Helium", ["Pressurized Helium", "Hardening Agent"], [1, 1], "Liquid Helium", 1, 3, "Compounder")
+
+    Resource("Nanofibre")
+    Recipe("Nanofibre", ["Tube", "Liquid Helium", "Wolfram Wire"], [20, 5, 8], "Nanofibre", 2, 6, "Compounder")
+
+    Resource("Organic Compound")
+    Recipe("Organic Compound", ["Sulphuric Acid", "Refined Oil", "Epoxy"], [1, 2, 1], "Organic Compound", 3, 4, "Compounder")
+
+    Resource("Plastic")
+    Recipe("Plastic", ["Refined Oil", "Sulphuric Acid", "Chemicals"], [3, 1, 1], "Plastic", 5, 10, "Compounder")
+
+    Resource("Substance #FHS-135-493")
+    Recipe(
+        "Substance #FHS-135-493",
+        ["Sulphuric Acid", "Goethite Powder", "Liquid Helium"],
+        [1, 3, 2],
+        "Substance #FHS-135-493",
+        1,
+        6,
+        "Compounder",
+    )
+
+    Resource("Superconductor")
+    Recipe(
+        "Superconductor", ["Synthetic Resin", "Electromagnet", "Supermagnet"], [4, 2, 6], "Superconductor", 1, 5, "Compounder"
+    )
+
+    Resource("Synthetic Protein")
+    Recipe(
+        "Synthetic Protein",
+        ["Organic Compound", "Substance #FHS-135-493", "Sulphuric Acid"],
+        [2, 1, 2],
+        "Synthetic Protein",
+        1,
+        6,
+        "Compounder",
+    )
+
+    Resource("Synthetic Resin")
+    Recipe(
+        "Synthetic Resin",
+        ["Hardening Agent", "Sulphuric Acid", "Calcite Sheets"],
+        [1, 3, 6],
+        "Synthetic Resin",
+        1,
+        3,
+        "Compounder",
+    )
+
+    # Pyro Forge
+
+    Resource("Goethite Ingot")
+    Recipe("Goethite Ingot", ["Goethite Ore"], [1], "Goethite Ingot", 10, 4, "Pyro Forge")
+
+    Resource("Titanoferrite Ingot")
+    Recipe("Titanoferrite Ingot", ["Titanium Ore", "Goethite Ore"], [10, 1], "Titanoferrite Ingot", 10, 4, "Pyro Forge")
+
+    Resource("Wolfram Steel Ingot")
+    Recipe("Wolfram Steel Ingot", ["Wolfram Ore", "Goethite Ore"], [10, 1], "Wolfram Steel Ingot", 10, 4, "Pyro Forge")
+
 
 init_data()
-graph_planning("Synthetic Silicon", 480)
+graph_planning("Heat Shield", 6)
+print_all_resource_tiers()
